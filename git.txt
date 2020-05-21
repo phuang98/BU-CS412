@@ -1,0 +1,39 @@
+PART 1
+1. $ git commit
+   $ git commit
+
+2. $ git checkout -b bugFix
+
+3. $ git checkout -b bugFix
+   $ git commit
+   $ git checkout master
+   $ git commit
+   $ git merge bugFix
+
+4. $ git checkout -b bugFix
+   $ git commit
+   $ git checkout master
+   $ git commit
+   $ git checkout bugFix
+   $ git rebase master
+
+PART 2
+1. $ git checkout C4
+
+2. $ git checkout bugFix^
+
+3. $ git checkout bugFix
+   $ git branch -f bugFix HEAD~3
+   $ git checkout master
+   $ git branch -f master C6
+   $ git checkout C1
+
+4. $ git reset HEAD^
+   $ git checkout pushed
+   $ git revert pushed
+
+PART 3
+1. $ git cherry-pick C3 C4 C7
+
+2. $ git rebase -i HEAD~4
+   omit C2, switch C4 and C5
