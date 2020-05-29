@@ -1,5 +1,5 @@
 //PROBLEM 1
-
-const alphabOrder = string => string.split('').sort().join('');
+const regex = /[ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz]/g;
+const alphabOrder = string => string.match(regex).sort().join('');
 
 module.exports = {alphabOrder};
