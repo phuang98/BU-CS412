@@ -19,11 +19,12 @@ let count = 6;
 function* even () {
     let val = myFibs.next().value;
     if (val % 2 == 0) {
-        console.log(`Even fib: ${val}`);
+        console.log(`   Even fib: ${val}`);
         count--;
     }
 }
 
+console.log(`Problem 1: `)
 while (count > 0){
     even().next();
 }
