@@ -39,4 +39,12 @@ const value = expression => {
     }
 }
 
+console.log(`Problem 2, 8+3: ${value('8+3')}`);
+console.log(`Problem 2, 5-3: ${value('5-3')}`);
+console.log(`Problem 2, 6*2: ${value('6*2')}`);
+console.log(`Problem 2, 8/4: ${value('8/4')}`);
+console.log(`Problem 2, 8%3: ${value('8%3')}`);
+
+
+
 module.exports = {value, addNums, subNums, mulNums, divNums, modNums};

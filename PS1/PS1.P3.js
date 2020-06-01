@@ -3,13 +3,14 @@
 const stringNFunc = (string, func) => func(string);
 
 //FIRST EXPRESSION
-stringNFunc('supercalifragilisticexpialidocious',
+console.log(`Problem 3, expression 1: ${stringNFunc('supercalifragilisticexpialidocious',
     string => {
         return string.split(/(?=c)/)
     }
-)
+)}`)
 
 //SECOND EXPRESSION
+console.log(`Problem 3, expression 2:`)
 console.log(stringNFunc('supercalifragilisticexpialidocious',
     string => {
         let original = string;
