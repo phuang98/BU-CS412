@@ -4,8 +4,12 @@ const router = express.Router();
 const CONFIG = require('../config/weatherAPI');
 
 //redis
+const {promisify} = require('util');
 const redis = require('redis');
 const client = redis.createClient();
+const existsAsync = promisify(client.exists).bind(client);
+const getAsync = promisify(client.get).bind(client);
+const setAsync = promisify(client.set).bind(client);
 
 
 router.route('/current')
@@ -15,50 +19,60 @@ router.route('/current')
 
         //redis
         const name = weather.lat + ' & ' + weather.lon;
-        client.exists(name, (err, response) => {
-            if(err) {throw new Error(err)}
-            if(response == 1) { //key exists, grab value
-                test = JSON.stringify('CACHED');
-                client.get(name, (err, response) => {
-                    console.log(JSON.stringify(name + ' cached'));
-                })
-            } else {
-                test = JSON.stringify('NOT IN CACHE');
-                client.set(name, name, (err, reponse) => { //name = key, reversedName = value
-                    console.log(JSON.stringify(name + ' not in cache'));
-                });
+        let match = await existsAsync(name);
+        if (match) { //key exists, grab value
+            let data = await getAsync(name);
+            data = JSON.parse(data);
+            let test = {
+                first: weather.hourly[0].temp,
+                second: weather.hourly[1].temp,
+                third: weather.hourly[2].temp,
+                cacheInfo: 'cached'
             }
-        })
+            res.send(test);
+        } else {
+            let data = result.json();
+            await setAsync(name, JSON.stringify(data));
+            let test = {
+                first: weather.hourly[0].temp,
+                second: weather.hourly[1].temp,
+                third: weather.hourly[2].temp,
+                cacheInfo: 'not in cache'
+            }
+            res.send(test);
+        }
         client.expire(name, 30);
-
-        res.render('ps4', {title: 'Weather for the Next 3 Hours!', lat: weather.lat, lon: weather.lon,
-            first: weather.hourly[0].temp, second: weather.hourly[1].temp, third: weather.hourly[2].temp, info: test});
     })
     .post(async (req, res, next) => {
-        let result = await fetch(CONFIG.url + '?lat=' +  req.body.lat + '&lon=' + req.body.lon
+        let result = await fetch(CONFIG.url + '?lat=' + req.body.lat + '&lon=' + req.body.lon
             + '&units=imperial&appid=' + CONFIG.key);
         let weather = await result.json();
 
         //redis
         const name = weather.lat + ' & ' + weather.lon;
-        client.exists(name, (err, response) => {
-            if(err) {throw new Error(err)}
-            if(response == 1) { //key exists, grab value
-                test = (JSON.stringify('CACHED'));
-                client.get(name, (err, response) => {
-                    console.log(JSON.stringify(name + ' cached'));
-                })
-            } else {
-                test = (JSON.stringify('NOT IN CACHE'));
-                client.set(name, name, (err, reponse) => { //name = key, reversedName = value
-                    console.log(JSON.stringify(name + ' not in cache'));
-                });
+        let match = await existsAsync(name);
+        if (match) { //key exists, grab value
+            let data = await getAsync(name);
+            data = JSON.parse(data);
+            let test = {
+                first: weather.hourly[0].temp,
+                second: weather.hourly[1].temp,
+                third: weather.hourly[2].temp,
+                cacheInfo: 'cached'
             }
-        })
+            res.send(test);
+        } else {
+            let data = result.json();
+            await setAsync(name, JSON.stringify(data));
+            let test = {
+                first: weather.hourly[0].temp,
+                second: weather.hourly[1].temp,
+                third: weather.hourly[2].temp,
+                cacheInfo: 'not in cache'
+            }
+            res.send(test);
+        }
         client.expire(name, 30);
-
-        res.render('ps4', {title: 'Weather for the Next 3 Hours!', lat: weather.lat, lon: weather.lon,
-            first: weather.hourly[0].temp, second: weather.hourly[1].temp, third: weather.hourly[2].temp, info: test});
     })
 
 module.exports = router;
