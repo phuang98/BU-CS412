@@ -16,6 +16,7 @@ router.route('/current')
     .get(async (req, res, next) => {
         let result = await fetch(CONFIG.url + '?lat=42.36&lon=-71.06&units=imperial&appid=' + CONFIG.key);
         let weather = await result.json();
+        let test;
 
         //redis
         const name = weather.lat + ' & ' + weather.lon;
@@ -23,25 +24,24 @@ router.route('/current')
         if (match) { //key exists, grab value
             let data = await getAsync(name);
             data = JSON.parse(data);
-            let test = {
+            test = {
                 first: weather.hourly[0].temp,
                 second: weather.hourly[1].temp,
                 third: weather.hourly[2].temp,
                 cacheInfo: 'cached'
             }
-            res.send(test);
         } else {
             let data = result.json();
             await setAsync(name, JSON.stringify(data));
-            let test = {
+            test = {
                 first: weather.hourly[0].temp,
                 second: weather.hourly[1].temp,
                 third: weather.hourly[2].temp,
                 cacheInfo: 'not in cache'
             }
-            res.send(test);
         }
         client.expire(name, 30);
+        res.send(test);
     })
     .post(async (req, res, next) => {
         let result = await fetch(CONFIG.url + '?lat=' + req.body.lat + '&lon=' + req.body.lon
@@ -54,25 +54,24 @@ router.route('/current')
         if (match) { //key exists, grab value
             let data = await getAsync(name);
             data = JSON.parse(data);
-            let test = {
+            test = {
                 first: weather.hourly[0].temp,
                 second: weather.hourly[1].temp,
                 third: weather.hourly[2].temp,
                 cacheInfo: 'cached'
             }
-            res.send(test);
         } else {
             let data = result.json();
             await setAsync(name, JSON.stringify(data));
-            let test = {
+            test = {
                 first: weather.hourly[0].temp,
                 second: weather.hourly[1].temp,
                 third: weather.hourly[2].temp,
                 cacheInfo: 'not in cache'
             }
-            res.send(test);
         }
         client.expire(name, 30);
+        res.send(test);
     })
 
 module.exports = router;
