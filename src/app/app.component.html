@@ -1,16 +1,2 @@
-<h1>Weather for the Next 3 Hours in Boston!</h1>
-<h2>Latitude: 42.3601° Longitude: -71.0589°</h2>
-
-<p>click the hours to display the temperature</p>
-
-<div name="outerList">
-  <ul *ngFor="let data of wx">
-
-    <li (click)="showLastName(data.hour)">{{data.hour}} </li>
-
-  </ul>
-</div>
-
-<div name="details" *ngIf="selectedDATA">
-  <input name="lastName" type="text" value="{{selectedDATA.temp}}">
-</div>
+<h2>CONTAINER</h2>
+<app-parent></app-parent>
