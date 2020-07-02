@@ -44,7 +44,7 @@ export class ParentComponent implements OnInit {
   getWeatherByLatLon() {
     this.wxService.getWeatherByFormGroup(this.weatherFormGroup).subscribe(
       response => {
-        this.currentWeather = response['hourly'];// similar to current.temp
+        this.currentWeather = response['hourly'];
         this.currentWeather = {
           first: response['hourly'][0]['temp'],
           second: response['hourly'][1]['temp'],

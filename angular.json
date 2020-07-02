@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "BU-CS412"
+    }
+  },
+  "defaultProject": "BU-CS412",
+  "cli": {
+    "analytics": "513266a8-45b1-4853-aec8-1e54fa8aa224"
+  }
 }
