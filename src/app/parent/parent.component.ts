@@ -29,6 +29,7 @@ export class ParentComponent implements OnInit {
   lat: string;
   lon: string;
   units: string;
+  test: string;
 
   weatherFormGroup = this.form.group({
     latControl: ['42.36', Validators.minLength(1)],
@@ -44,13 +45,11 @@ export class ParentComponent implements OnInit {
   getWeatherByLatLon() {
     this.wxService.getWeatherByFormGroup(this.weatherFormGroup).subscribe(
       response => {
-        this.currentWeather = response['hourly'];
         this.currentWeather = {
           first: response['hourly'][0]['temp'],
           second: response['hourly'][1]['temp'],
           third: response['hourly'][2]['temp'],
         }
-        console.log(`hourly looks like this: ${response['hourly']}`)
       }
     );
   }
